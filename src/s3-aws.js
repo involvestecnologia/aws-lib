@@ -1,7 +1,8 @@
 'use_strict'
 
 class S3 {
-  static async upload () {
+  static upload () {
+    return true
   }
 }
 

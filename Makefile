@@ -17,6 +17,11 @@ publish:
 	docker cp $(PROJECT_NAME):/data/package.json .
 	docker rm -vf $(PROJECT_NAME)
 
+.PHONY: lint
+lint:
+	@docker build --pull --tag=$(PROJECT_NAME)-lint:latest --target=lint .
+	@docker run --rm $(PROJECT_NAME)-lint:latest
+
 .PHONY: test
 test:
 	docker-compose build --pull

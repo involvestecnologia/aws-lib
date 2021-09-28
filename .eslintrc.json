@@ -1,29 +1,57 @@
+
 {
-  "env": {
-      "node": true
-  },
-  "plugins": [
-      "security",
-      "sonarjs"
-  ],
-  "extends": [
-      "eslint:all",
-      "standard",
-      "plugin:security/recommended",
-      "plugin:sonarjs/recommended"
-  ],
-  "parserOptions": {
-      "ecmaVersion": 9
-  },
-  "rules": {
-      "array-element-newline": "off",
-      "function-call-argument-newline": "off",
-      "function-paren-newline": "off",
-      "max-len": "off",
-      "max-lines-per-function": "off",
-      "max-statements": "off",
-      "no-invalid-this": "off",
-      "no-underscore-dangle": "off",
-      "no-magic-numbers": "off"
-  }
+    "env": {
+        "node": true
+    },
+    "plugins": [
+        "mocha",
+        "security",
+        "sonarjs"
+    ],
+    "extends": [
+        "eslint:all",
+        "standard",
+        "plugin:mocha/recommended",
+        "plugin:security/recommended",
+        "plugin:sonarjs/recommended"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 2020
+    },
+    "rules": {
+        "array-element-newline": "off",
+        "default-param-last": "off",
+        "function-call-argument-newline": "off",
+        "function-paren-newline": "off",
+        "lines-around-comment": "off",
+        "max-len": "off",
+        "max-lines": "off",
+        "max-lines-per-function": "off",
+        "max-params": "off",
+        "max-statements": "off",
+        "no-invalid-this": "off",
+        "no-undefined": "off",
+        "no-underscore-dangle": "off",
+        "no-magic-numbers": "off",
+        "no-plusplus": "off",
+        "no-ternary": "off",
+        "quote-props": [
+            "error",
+            "as-needed"
+        ],
+        "security/detect-non-literal-fs-filename": "off",
+        "security/detect-object-injection": "off"
+    },
+    "overrides": [
+        {
+            "files": [
+                "test/**/*.*"
+            ],
+            "rules": {
+                "func-names": "off",
+                "prefer-arrow-callback": "off"
+            }
+        }
+    ],
+    "noInlineConfig": true
 }
