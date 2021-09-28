@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  test:
+    build: 
+      context: .
+      target: test
+    image: "test_aws-lib:latest"
+    networks:
+      - aws-lib-network
+    environment:
+      - LOG_LEVEL=error
+
+networks:
+  aws-lib-network:
+    driver: bridge

@@ -1,0 +1,69 @@
+env:
+  COMPOSE_DOCKER_CLI_BUILD: 1
+  DOCKER_BUILDKIT: 1
+  TEAM_EMAIL: sdom@involves.com
+  
+steps:
+  - label: "Weekly dependencies update"
+    key: "update"
+    env:
+      SCRIPT_NAME: ci_run_tests.sh
+    command:
+      - git config --global user.email $$TEAM_EMAIL
+      - git config --global user.name "Buildkite"
+      - git checkout master && git fetch && git pull --rebase
+      - docker build --target=dependencies-update --tag=$$BUILDKITE_BUILD_ID .
+      - docker run --name=$$BUILDKITE_BUILD_ID $$BUILDKITE_BUILD_ID
+      - docker cp $$BUILDKITE_BUILD_ID:/data/package.json .
+      - docker rm -vf $$BUILDKITE_BUILD_ID
+      - chmod +x ./$$SCRIPT_NAME
+      - ./$$SCRIPT_NAME
+      - git add package.json
+      - git commit -m "[CI] Updating Dependencies (weekly)"
+      - git push -u origin master
+    soft_fail:
+      - exit_status: 1
+    agents:
+      queue: "docker"
+    if: build.source == "schedule"
+  
+  - label: "Lint"
+    key: "lint"
+    env:
+      SCRIPT_NAME: ci_run_tests.sh
+    command:
+      - docker build --tag=$$BUILDKITE_BUILD_ID --target=lint .
+      - docker run --rm $$BUILDKITE_BUILD_ID
+    agents:
+      queue: "docker"
+    if: build.source != "schedule"
+
+  - label: "Tests"
+    key: "test"
+    env:
+      SCRIPT_NAME: ci_run_tests.sh
+    command:
+      - chmod +x ./$$SCRIPT_NAME
+      - ./$$SCRIPT_NAME
+    agents:
+      queue: "docker"
+    if: build.source != "schedule"
+
+  - label: "Publish Library"
+    key: "publish"
+    command:
+      - git config --global user.email $$TEAM_EMAIL
+      - git config --global user.name "Buildkite"
+      - git checkout master && git fetch && git pull --rebase
+      - docker build --build-arg NPM_TOKEN=$$NPM_TOKEN --tag=$$BUILDKITE_BUILD_ID --target=publish .
+      - docker run --name=$$BUILDKITE_BUILD_ID $$BUILDKITE_BUILD_ID
+      - docker cp $$BUILDKITE_BUILD_ID:/data/package.json .
+      - docker rm -vf $$BUILDKITE_BUILD_ID
+      - git add package.json
+      - git commit -m "[skip ci] [CI] Bumping version"
+      - git push -u origin master
+    agents:
+      queue: "docker"
+    depends_on:
+      - "test"
+    if: build.source != "schedule" && build.branch == "master"
