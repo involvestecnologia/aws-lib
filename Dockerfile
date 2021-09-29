@@ -42,4 +42,5 @@ FROM dependencies AS test
 USER node
 COPY --chown=node:node wait /wait
 COPY --chown=node:node . ./
+RUN mkdir /data/tmp/
 CMD ["sh", "-c", "/wait && npm run coverage"]

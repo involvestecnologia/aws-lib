@@ -1,5 +1,17 @@
 version: '3.7'
 services:
+  localstack:
+    image: localstack/localstack:latest
+    container_name: aws-lib-localstack
+    environment: 
+      - AWS_DEFAULT_REGION=us-east-1
+      - EDGE_PORT=4566
+      - SERVICES=s3
+      - DEBUG=1
+    networks:
+      - aws-lib-network
+    volumes: 
+      - "${TEMPDIR:-/tmp/localstack}:/tmp/localstack"
   test:
     build: 
       context: .
@@ -7,8 +19,14 @@ services:
     image: "test_aws-lib:latest"
     networks:
       - aws-lib-network
+    depends_on:
+      - localstack
     environment:
       - LOG_LEVEL=error
+      - AWS_ACCESS_KEY=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - LOCALSTACK_URL=http://aws-lib-localstack:4566
+      - WAIT_HOSTS=aws-lib-localstack:4566
 
 networks:
   aws-lib-network:
