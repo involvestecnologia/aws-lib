@@ -13,21 +13,24 @@ class S3Aws {
     return s3.createBucket(params).promise()
   }
 
-  static deleteFile (bucketName, filename) {
-    const params = {
-      Bucket: bucketName,
-      Key: filename
-    }
-
-    return s3.deleteObject(params).promise()
-  }
-
   static deleteBucket (name) {
     const params = {
       Bucket: name
     }
 
     return s3.deleteBucket(params).promise()
+  }
+
+  static async deleteAnyFilesInBucket (bucketName) {
+    const files = await this.listFilesInBucket(bucketName)
+
+    if (!files.length) return
+
+    const objects = files.map((key) => ({ Key: key }))
+
+    const params = { Bucket: bucketName, Delete: { Objects: objects } }
+
+    await s3.deleteObjects(params).promise()
   }
 
   static uploadFile (bucketName, filePath) {
