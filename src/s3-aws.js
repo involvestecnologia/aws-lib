@@ -33,14 +33,14 @@ class S3Aws {
     await s3.deleteObjects(params).promise()
   }
 
-  static uploadFile (bucketName, filePath) {
-    const filename = path.parse(filePath).base
+  static uploadFile (bucketName, filePath, filename) {
+    const key = filename || path.parse(filePath).base
 
     const fileContent = fs.readFileSync(filePath)
     const params = {
       Body: fileContent,
       Bucket: bucketName,
-      Key: filename
+      Key: key
     }
 
     return s3.upload(params).promise()

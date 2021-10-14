@@ -58,6 +58,15 @@ describe('Integration tests for s3', function () {
     assert(files.includes(FILE_KEY))
   })
 
+  it('should upload file with another name', async function () {
+    const filename = 'integration-test-another-name.csv'
+    await assert.doesNotReject(S3.uploadFile(BUCKET_NAME, FILE_PATH, filename))
+
+    const files = await S3.listFilesInBucket(BUCKET_NAME)
+
+    assert(files.includes(filename))
+  })
+
   it('should delete any files in bucket', async function () {
     await S3.uploadFile(BUCKET_NAME, FILE_PATH)
     await S3.uploadFile(BUCKET_NAME, FILE2_PATH)
