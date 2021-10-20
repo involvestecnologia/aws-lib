@@ -94,7 +94,7 @@ describe('Integration tests for s3', function () {
     const hasAfterUpload = _getHashFile(FILE_PATH)
     await S3.uploadFile(BUCKET_NAME, FILE_PATH)
 
-    await assert.doesNotReject(S3.downladFile(BUCKET_NAME, FILE_KEY, LOCAL_PATH))
+    await assert.doesNotReject(S3.downloadFile(BUCKET_NAME, FILE_KEY, LOCAL_PATH))
 
     assert(fs.existsSync(LOCAL_PATH + FILE_KEY))
 

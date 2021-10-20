@@ -46,7 +46,7 @@ class S3Aws {
     return s3.upload(params).promise()
   }
 
-  static async downladFile (bucketName, filename, localPath) {
+  static async downloadFile (bucketName, filename, localPath) {
     const params = {
       Bucket: bucketName,
       Key: filename
