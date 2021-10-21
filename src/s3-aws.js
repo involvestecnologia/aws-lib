@@ -53,7 +53,8 @@ class S3Aws {
     }
 
     const data = await s3.getObject(params).promise()
-    fs.writeFileSync(localPath + filename, data.Body)
+    const pathFile = path.join(localPath, filename)
+    fs.writeFileSync(pathFile, data.Body)
   }
 
   static async listFilesInBucket (name) {
