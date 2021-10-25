@@ -90,8 +90,25 @@ describe('Integration tests for s3', function () {
     assert(files.includes(FILE_KEY))
   })
 
+  it('should read file', async function () {
+    await S3.uploadFile(BUCKET_NAME, FILE_PATH)
+
+    let content = {}
+
+    await assert.doesNotReject(async () => {
+      content = await S3.readFile({
+        bucketName: BUCKET_NAME,
+        filename: FILE_KEY
+      })
+    })
+
+    const localContent = fs.readFileSync(FILE_PATH)
+
+    assert.equal(content.Body.toString(), localContent.toString())
+  })
+
   it('should download file', async function () {
-    const hasAfterUpload = _getHashFile(FILE_PATH)
+    const hashAfterUpload = _getHashFile(FILE_PATH)
     await S3.uploadFile(BUCKET_NAME, FILE_PATH)
 
     await assert.doesNotReject(S3.downloadFile(BUCKET_NAME, FILE_KEY, LOCAL_PATH))
@@ -100,7 +117,7 @@ describe('Integration tests for s3', function () {
 
     const hashAfterDownload = _getHashFile(LOCAL_PATH + FILE_KEY)
 
-    assert.equal(hashAfterDownload, hasAfterUpload)
+    assert.equal(hashAfterDownload, hashAfterUpload)
 
     fs.unlinkSync(LOCAL_PATH + FILE_KEY)
   })

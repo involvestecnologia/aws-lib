@@ -46,13 +46,17 @@ class S3Aws {
     return s3.upload(params).promise()
   }
 
-  static async downloadFile (bucketName, filename, localPath) {
+  static readFile ({ bucketName, filename }) {
     const params = {
       Bucket: bucketName,
       Key: filename
     }
 
-    const data = await s3.getObject(params).promise()
+    return s3.getObject(params).promise()
+  }
+
+  static async downloadFile (bucketName, filename, localPath) {
+    const data = await this.readFile({ bucketName, filename })
     const pathFile = path.join(localPath, filename)
     fs.writeFileSync(pathFile, data.Body)
   }
