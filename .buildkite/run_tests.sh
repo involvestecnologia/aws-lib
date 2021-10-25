@@ -4,8 +4,10 @@
 # immediately exit if 'run_tests' failed
 set -uo pipefail
 
+docker-compose pull
+docker-compose build
+
 # Run the main command we're most interested in
-docker-compose build --pull
 COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose run test
 
 # Capture the exit status
