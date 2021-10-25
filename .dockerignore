@@ -6,9 +6,6 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-# Buildkite dir
-.buildkite/
-
 # Coverage temp dir
 .nyc_output/
 coverage/
@@ -17,18 +14,13 @@ coverage/
 node_modules/
 
 # Git related
-.git/
 .githooks/
-.gitignore
 
 # JetBrains
 .idea/
 
 # Visual Code
 .vscode/
-
-# Buildkite CI
-.buildkite/
 
 # Gitlab CI
 .gitlab-ci.yml
@@ -39,13 +31,3 @@ imgs/
 
 # Kubernets files
 k8s/
-
-# Project files
-Dockerfile
-Makefile*
-
-# Docker-compose
-docker-compose.yml
-
-# Dockerignore itself
-.dockerignore
