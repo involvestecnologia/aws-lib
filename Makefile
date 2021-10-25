@@ -1,4 +1,6 @@
 export PROJECT_NAME = aws-lib
+export GIT_EMAIL = sdom@involves.com
+export GIT_USER = Buildkite
 
 export COMPOSE_DOCKER_CLI_BUILD = 1
 export DOCKER_BUILDKIT = 1
@@ -12,10 +14,11 @@ dependencies-update:
 
 .PHONY: publish
 publish:
-	docker build --build-arg NPM_TOKEN=$(NPM_TOKEN) --tag=$(PROJECT_NAME) --target=publish .
-	docker run --name=$(PROJECT_NAME) $(PROJECT_NAME)
-	docker cp $(PROJECT_NAME):/data/package.json .
-	docker rm -vf $(PROJECT_NAME)
+	docker build \
+		--build-arg NPM_TOKEN=$(NPM_TOKEN) \
+		--build-arg GIT_EMAIL=$(GIT_EMAIL) \
+		--build-arg GIT_USER=$(GIT_USER) \
+		--target=publish .
 
 .PHONY: lint
 lint:
