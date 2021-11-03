@@ -69,6 +69,14 @@ class S3Aws {
     const result = await s3.listObjectsV2(params).promise()
     return result.Contents.map((item) => item.Key)
   }
+
+  static checkBucketExists (bucketName) {
+    const options = {
+      Bucket: bucketName
+    }
+
+    return s3.headBucket(options).promise()
+  }
 }
 
 module.exports = S3Aws

@@ -121,6 +121,14 @@ describe('Integration tests for s3', function () {
 
     fs.unlinkSync(LOCAL_PATH + FILE_KEY)
   })
+
+  it('should return bucket exists', async function () {
+    await assert.doesNotReject(S3.checkBucketExists(BUCKET_NAME))
+  })
+
+  it('should return error in bucket exists when bucket doesnt exist', async function () {
+    await assert.rejects(S3.checkBucketExists('another-bucket'))
+  })
 })
 
 const _getHashFile = (filePath) => {
