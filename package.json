@@ -8,6 +8,9 @@
     "coverage": "nyc npm run test",
     "lint": "node_modules/eslint/bin/eslint.js ."
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "author": "Paulo Ferrari",
   "license": "ISC",
   "dependencies": {

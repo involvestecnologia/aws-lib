@@ -52,7 +52,7 @@ steps:
     key: "publish"
     command:
       - git checkout master && git fetch && git pull --rebase
-      - docker build --build-arg NPM_TOKEN=$$NPM_TOKEN --build-arg GIT_EMAIL=$$GIT_EMAIL --build-arg GIT_USER=$$GIT_USER --tag=$$BUILDKITE_BUILD_ID --target=publish .
+      - docker build --build-arg NPM_TOKEN=$GP_TOKEN --build-arg GIT_EMAIL=$$GIT_EMAIL --build-arg GIT_USER=$$GIT_USER --tag=$$BUILDKITE_BUILD_ID --target=publish .
     agents:
       queue: "docker"
     depends_on:
