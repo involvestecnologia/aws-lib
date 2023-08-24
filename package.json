@@ -8,6 +8,10 @@
     "coverage": "nyc npm run test",
     "lint": "node_modules/eslint/bin/eslint.js ."
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/involvestecnologia/aws-lib.git"
+  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
